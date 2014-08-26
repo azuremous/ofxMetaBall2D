@@ -17,14 +17,14 @@ private:
     ofFbo realMetaballTex;
     ofShader shader;
     
-    float alpha;
+    float threshold;
     float r,g,b;
     
 public:
     explicit ofxMetaBall2D();
     
     bool setup(float w, float h);
-    void setAlpha(float a);
+    void setThreshold(float t);
     void setColor(float _r, float _g, float _b);
     void begin();
     void end();
@@ -33,5 +33,5 @@ public:
     ofTexture createBall(int r, int g, int b, float radius = 64.0);
     ofTexture createRect(int r, int g, int b,int dt = 4, int h = 200);
     ofTexture rawTexture() { return metaballTex.getTextureReference(); }
-    
+    ofFbo getFbo() const { return realMetaballTex; }
 };

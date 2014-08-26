@@ -8,13 +8,13 @@
 #include "ofxMetaBall2D.h"
 
 //--------------------------------------------------------------
-ofxMetaBall2D::ofxMetaBall2D():alpha(0.30){}
+ofxMetaBall2D::ofxMetaBall2D():threshold(0.30){}
 
 //--------------------------------------------------------------
 bool ofxMetaBall2D::setup(float w, float h){
     renderTex.allocate(w ,h,GL_RGBA);
     metaballTex.allocate(w, h, GL_RGBA);
-    realMetaballTex.allocate(w, h, GL_RGBA);
+    realMetaballTex.allocate(w, h, GL_RGBA, 8);
     
     renderTex.begin();
     ofClear(255);
@@ -58,21 +58,25 @@ bool ofxMetaBall2D::setup(float w, float h){
     vertexShader += STRINGIFY(
                               
                               void main(){
-                                  gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
+                                  gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+                                  gl_PointSize = 0.0;
                                   gl_TexCoord[0] = gl_MultiTexCoord0;
+                                  gl_FrontColor = gl_Color;
                               }
                               );
     
     shader.unload();
     shader.setupShaderFromSource(GL_FRAGMENT_SHADER, fragmentShader);
     shader.setupShaderFromSource(GL_VERTEX_SHADER, vertexShader);
-    
+    if(ofIsGLProgrammableRenderer()){
+		shader.bindDefaults();
+	}
     return shader.linkProgram();
 }
 
 //--------------------------------------------------------------
-void ofxMetaBall2D::setAlpha(float a){
-    alpha = a;
+void ofxMetaBall2D::setThreshold(float t){
+    threshold = t;
 }
 
 //--------------------------------------------------------------
@@ -106,7 +110,7 @@ void ofxMetaBall2D::end(){
     ofClear(255);
     ofPushStyle();
     glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, alpha);
+    glAlphaFunc(GL_GREATER, threshold);
     ofSetColor(0);
     renderTex.draw(0,0);
     glDisable(GL_ALPHA_TEST);
