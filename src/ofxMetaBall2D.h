@@ -29,6 +29,7 @@ public:
     void begin();
     void end();
     void draw(float x, float y);
+    void draw(float x, float y, float w, float h);
     
     ofTexture createBall(int r, int g, int b, float radius = 64.0);
     ofTexture createRect(int r, int g, int b,int dt = 4, int h = 200);

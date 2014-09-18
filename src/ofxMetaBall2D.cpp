@@ -44,9 +44,9 @@ bool ofxMetaBall2D::setup(float w, float h){
                                     
                                     vec4 tex = texture2DRect ( texture, gl_TexCoord[0].st );
                                     if (tex.r + tex.g + tex.b != 3.0) {
-                                        tex.r = red;
-                                        tex.g = green;
-                                        tex.b = blue;
+                                        tex.r = 0.0;//red;
+                                        tex.g = 0.0;//green;
+                                        tex.b = 0.0;//blue;
                                     }
                                     
                                     //tex = 1.0 - tex;
@@ -137,6 +137,11 @@ void ofxMetaBall2D::end(){
 //--------------------------------------------------------------
 void ofxMetaBall2D::draw(float x, float y){
     realMetaballTex.draw(x, y);
+}
+
+//--------------------------------------------------------------
+void ofxMetaBall2D::draw(float x, float y, float w, float h){
+    realMetaballTex.draw(x, y, w, h);
 }
 
 //--------------------------------------------------------------
